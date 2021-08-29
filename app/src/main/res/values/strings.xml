@@ -11,4 +11,13 @@
     <string name="bio">Bio</string>
     <string name="name">Name</string>
     <string name="my_profile">MY PROFILE</string>
+    <string name="hello_world">hello world</string>
+    <string name="name">Name</string>
+    <string name="primary_detail">PRIMARY DETAIL</string>
+    <string name="bio">Bio</string>
+    <string name="email">Email</string>
+    <string name="email">Email</string>
+    <string name="create">Create</string>
+    <string name="splashtitletextview">AUTH TEST APP</string>
+    <string name="author">RezaIch</string>
 </resources>

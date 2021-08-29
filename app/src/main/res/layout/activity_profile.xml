@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:padding="20dp"
     tools:context=".ProfileActivity">
 
     <androidx.cardview.widget.CardView
@@ -20,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/my_profile"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:gravity="center"
             android:layout_marginTop="8dp"/>
         <ImageView
@@ -50,19 +51,52 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Name"
-            android:textSize="20dp"
-            android:layout_marginTop="40dp"/>
-
+            android:text="@string/name"
+            android:textSize="30sp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="30dp"/>
     </LinearLayout>
-
     <TextView
         android:background="@color/grey"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="PRIMARY DETAIL"
+        android:text="@string/primary_detail"
         android:gravity="center"
         android:textStyle="bold"
         android:padding="5dp"/>
 
+    <TextView
+        android:id="@+id/textBio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Bio" />
+    <EditText
+        android:id="@+id/profileBioEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:minHeight="48dp"
+        android:text="@string/bio" />
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/profileEmailText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/email" />
+    <EditText
+        android:id="@+id/profileEmailEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:minHeight="48dp"
+        android:text="@string/email" />
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </LinearLayout>
