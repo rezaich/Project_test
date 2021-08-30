@@ -25,11 +25,11 @@ class BottomMenu :BottomSheetDialogFragment(){
         val view = binding.root
         auth = Firebase.auth
 
-        binding.profilecardView.setOnClickListener {
+        binding.profileCardView.setOnClickListener {
             startActivity(Intent(requireActivity(),ProfileActivity::class.java))
         }
 
-        binding.logoutCardView.setOnClickListener {
+        binding.logoutProfileView.setOnClickListener {
             val builder = AlertDialog.Builder(requireActivity()).apply {
                 setTitle("logout")
                 setMessage("Are You Sure to Logout?")

@@ -37,7 +37,7 @@ class SplashScreenActivity : AppCompatActivity() {
         auth = Firebase.auth
 
         val animatorY = ObjectAnimator.ofFloat(binding.imageView,"y",400f)
-        val animatorX = ObjectAnimator.ofFloat(binding.splashTitleTextView,"y",400f)
+        val animatorX = ObjectAnimator.ofFloat(binding.splashTitleTextView,"y",800f)
 
         animatorY.setDuration(animationTime)
         animatorX.setDuration(animationTime)

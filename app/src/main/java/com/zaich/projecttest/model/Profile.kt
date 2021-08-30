@@ -1,8 +1,7 @@
 package com.zaich.projecttest.model
 
-class Profile(
-    val name : String? =null
-    val url : String? = null
-    val uid : String? = null
-) {
-}
+data class Profile(
+    var name : String? =null,
+    var url : String? = null,
+    var uid : String? = null,
+)
