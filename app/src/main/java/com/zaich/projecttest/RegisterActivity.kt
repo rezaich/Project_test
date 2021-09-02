@@ -52,7 +52,7 @@ class RegisterActivity : AppCompatActivity() {
             val password = passwordEditText.text.toString()
             val confirmPassword = binding.registerRepeatPassword.text.toString()
 
-            if(email.isNotEmpty() || password.isNotEmpty() || confirmPassword.isNotEmpty()){
+            if(email.isNotEmpty() && password.isNotEmpty() && confirmPassword.isNotEmpty()){
                 if (password.equals(confirmPassword)) {
                     auth.createUserWithEmailAndPassword(email,password)
                         .addOnCompleteListener {

@@ -48,8 +48,8 @@ class ProfileActivity : AppCompatActivity() {
 
                         Glide.with(this).load(url).into(binding.ivProfile)
                         binding.tvNameProfile.text = name
-                        binding.profileBioText.text = bio
-                        binding.profileEmailText.text = email
+                        binding.profileBioEditText.text = bio
+                        binding.profileEmailEditText.text = email
                     }else{
                         startActivity(Intent(this,CreateProfileActivity::class.java))
                     }

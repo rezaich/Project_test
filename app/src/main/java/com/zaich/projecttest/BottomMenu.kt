@@ -30,15 +30,20 @@ class BottomMenu :BottomSheetDialogFragment(){
         }
 
         binding.logoutProfileView.setOnClickListener {
-            val builder = AlertDialog.Builder(requireActivity()).apply {
-                setTitle("logout")
-                setMessage("Are You Sure to Logout?")
-                setPositiveButton("Logout"){_,_ ->}
+            activity?.let {
+                val intent = Intent(it,LoginActivity::class.java)
+                val builder = AlertDialog.Builder(requireActivity()).apply {
+                    setTitle("logout")
+                    setMessage("Are You Sure to Logout?")
+                    setPositiveButton("Logout"){_,_ ->
+                        auth.signOut()
+                        startActivity(intent)
+                    }
+                }
+                builder.create()
+                builder.show()
             }
-            builder.create()
-            builder.show()
         }
-
         return view
     }
 }
