@@ -58,6 +58,9 @@ class LoginActivity : AppCompatActivity() {
                 auth.signInWithEmailAndPassword(email,password)
                     .addOnCompleteListener {
                         if(it.isSuccessful){
+                            val uid = it.result!!.user!!.uid
+                            //request ke endpoinr Laravel login firebase
+                            //parameter yang berisi token(firebase.token)
                             startActivity(Intent(this,MainActivity::class.java))
                             finish()
                     }else{

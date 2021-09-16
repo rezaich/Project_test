@@ -29,6 +29,10 @@ class BottomMenu :BottomSheetDialogFragment(){
             startActivity(Intent(requireActivity(),ProfileActivity::class.java))
         }
 
+        binding.ListUser.setOnClickListener {
+            startActivity(Intent(requireActivity(),ListUserActivity::class.java))
+        }
+
         binding.logoutProfileView.setOnClickListener {
             activity?.let {
                 val intent = Intent(it,LoginActivity::class.java)

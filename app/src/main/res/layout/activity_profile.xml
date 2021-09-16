@@ -78,6 +78,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="false"
+        android:textSize="20sp"
         android:minHeight="48dp"
         android:text="@string/bio" />
 
@@ -97,6 +98,7 @@
         android:layout_height="wrap_content"
         android:clickable="false"
         android:minHeight="48dp"
+        android:textSize="20sp"
         android:text="@string/email" />
     <TableRow
         android:layout_width="match_parent"

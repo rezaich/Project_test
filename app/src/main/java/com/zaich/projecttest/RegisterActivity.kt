@@ -56,6 +56,8 @@ class RegisterActivity : AppCompatActivity() {
                 if (password.equals(confirmPassword)) {
                     auth.createUserWithEmailAndPassword(email,password)
                         .addOnCompleteListener {
+                            val uid = it.result!!.user!!.uid
+                            it.result!!.user!!.uid
                             if(it.isSuccessful){
                                 startActivity(Intent(this,MainActivity::class.java))
                                 finish()

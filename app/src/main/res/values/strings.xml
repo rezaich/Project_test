@@ -22,4 +22,9 @@
     <string name="time">time</string>
     <string name="text">text</string>
     <string name="delete">delete</string>
+    <string name="attach">Attach</string>
+    <string name="list_user">List User</string>
+    <string name="user_name">user_name</string>
+    <string name="type_message" />
+    <string name="btn_sign_up" />
 </resources>

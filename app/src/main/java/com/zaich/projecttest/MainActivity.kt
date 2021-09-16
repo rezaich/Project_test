@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.database.FirebaseRecyclerAdapter
@@ -31,6 +32,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         auth = Firebase.auth
         database = Firebase.database
         recyclerView = findViewById(R.id.rvList)
@@ -58,6 +60,13 @@ class MainActivity : AppCompatActivity() {
     private fun getRecycler() {
         //Go to create profile if profile data not exist
         val currentUser = auth.currentUser
+        currentUser!!.getIdToken(false)
+            .addOnCompleteListener {
+                val token = it.result!!.token
+                //request ke endpoinr Laravel login firebase
+                //parameter yang berisi token(firebase.token)
+            }
+
         currentUser?.let {
             val uid = it.uid
             val firestore = Firebase.firestore
@@ -103,103 +112,3 @@ class MainActivity : AppCompatActivity() {
     }
 
 }
-/*    override fun onStart() {
-        super.onStart()
-        val reference = database.getReference("posts")
-        val options = FirebaseRecyclerOptions.Builder<Post>()
-            .setQuery(reference,Post::class.java)
-            .build()
-        val adapter = object  :  FirebaseRecyclerAdapter<Post,PostViewHolder>(options){
-            override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
-                val view = LayoutInflater.from(parent.context).inflate(R.layout.post_layout,parent,false)
-                return PostViewHolder(view)
-
-*//*                val view = PostLayoutBinding.inflate(LayoutInflater.from(parent.context),parent,false)
-                return PostViewHolder(view)*//*
-            }
-
-            override fun onBindViewHolder(holder: PostViewHolder, position: Int, model: Post) {
-                holder.setPost(this@MainActivity, model, auth.currentUser!!.uid)
-
-                val postKey = getRef(position).key!!
-
-                holder.btDelete.setOnClickListener {
-                    val reference = database.getReference("posts").child(postKey)
-                    reference.removeValue()
-                }
-            }
-        }
-        adapter.startListening()
-        binding.rvList.setHasFixedSize(true)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = adapter
-    }
-}*/
-
-/*class MainActivity : AppCompatActivity() {
-    private lateinit var button: Button
-    private lateinit var postButton: Button
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var auth: FirebaseAuth
-    private lateinit var database: FirebaseDatabase
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        button = findViewById(R.id.mainLogoutButton)
-        postButton = findViewById(R.id.mainPostButton)
-        recyclerView = findViewById(R.id.mainRecyclerView)
-        auth = Firebase.auth
-        database = Firebase.database
-
-        button.setOnClickListener {
-            auth.signOut()
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
-
-        postButton.setOnClickListener {
-            val intent = Intent(this, CreatePostActivity::class.java)
-            startActivity(intent)
-        }
-    }
-
-*//*    override fun onStart() {
-        super.onStart()
-
-        val reference = database.getReference("posts")
-        val options = FirebaseRecyclerOptions.Builder<Post>()
-            .setQuery(reference, Post::class.java)
-            .build()
-
-        val adapter = object : FirebaseRecyclerAdapter<Post, PostViewHolder>(options) {
-            override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
-                val view = LayoutInflater
-                    .from(parent.context)
-                    .inflate(R.layout.post_layout, parent, false)
-
-                return PostViewHolder(view)
-            }
-
-            override fun onBindViewHolder(holder: PostViewHolder, position: Int, model: Post) {
-                holder.setPost(this@MainActivity, model, auth.currentUser!!.uid)
-
-                val postKey = getRef(position).key!!
-
-                holder.deleteButton.setOnClickListener {
-                    val reference = database.getReference("posts").child(postKey)
-                    reference.removeValue()
-                }
-            }
-
-        }
-
-        adapter.startListening()
-
-        recyclerView.setHasFixedSize(true)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = adapter
-    }*//*
-}*/
