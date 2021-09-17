@@ -2,14 +2,17 @@ package com.zaich.projecttest
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.bumptech.glide.Glide
+import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ktx.database
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.zaich.projecttest.databinding.ActivityChatBinding
+import com.zaich.projecttest.model.Chat
+import com.zaich.projecttest.model.Profile
 
 class ChatActivity : AppCompatActivity() {
 
@@ -17,11 +20,11 @@ class ChatActivity : AppCompatActivity() {
         const val EXTRA_USER = "EXTRA USER"
     }
 
-    //    private var firebaseUser : FirebaseUser? = null
-//    private var reference : DatabaseReference? = null
     private lateinit var fireStore : FirebaseFirestore
     private lateinit var auth: FirebaseAuth
     private lateinit var binding:ActivityChatBinding
+    private lateinit var database: FirebaseDatabase
+    private lateinit var chat: Chat
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,63 +34,36 @@ class ChatActivity : AppCompatActivity() {
 
         fireStore = Firebase.firestore
         auth = Firebase.auth
+        database = Firebase.database
+        chat = Chat()
+        val currentUser = auth.currentUser
 
         binding.imgBack.setOnClickListener{
             onBackPressed()
         }
 
-        val username = intent.getStringExtra(EXTRA_USER)
-        val bundle = Bundle()
-        bundle.putString(EXTRA_USER, username)
+        val getModel = intent.getParcelableExtra<Profile>(EXTRA_USER) as Profile
 
-        binding.tvUserName.text = username
+        binding.tvUserName.text = getModel.name
 
-//        getChat()
+        binding.btnSendMessage.setOnClickListener {
+            var messege: String = binding.etMessage.text.toString()
 
-
-
-/*        firebaseUser = FirebaseAuth.getInstance().currentUser
-        reference = FirebaseDatabase.getInstance().getReference("Users").child(selectUser.uid!!)
-
-        reference!!.addValueEventListener(object : ValueEventListener{
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val user = snapshot.getValue(Profile::class.java)
-                binding.tvUserName.text = user?.name
-                if (user?.url == ""){
-                    binding.imgProfile.setImageResource(R.mipmap.ic_launcher_round)
-                }else{
-                    Glide.with(this@ChatActivity).load(user?.url).into(binding.imgProfile)
-                }
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-//                Toast.makeText(applicationContext, error.message, Toast.LENGTH_SHORT).show()
-            }
-
-        })*/
-    }
-
-    override fun onStart() {
-        super.onStart()
-        val currentUser = auth.currentUser
-
-        currentUser?.let {
-            val uid = it.uid
-            val reference = fireStore.collection("users").document(uid)
-            reference?.get()?.addOnCompleteListener {
-                it.result?.let {
-                    if (it.exists()){
-                        val name = it.getString("name")
-                        val url = it.getString("url")
-
-                        Glide.with(this).load(url).into(binding.imgProfile)
-                        binding.tvUserName.text = name
-                    }
-                    else{
-                        binding.imgProfile.setImageResource(R.mipmap.ic_launcher_round)                   }
-                }
+            if (messege.isEmpty()){
+                Toast.makeText(applicationContext, "messege empty", Toast.LENGTH_SHORT).show()
+            }else{
+                sendMessage(currentUser!!.uid , getModel.uid!! ,messege)
             }
         }
     }
 
+    private fun sendMessage(senderId : String,receiverId : String,messege:String){
+        var reference = database.getReference("messeges")
+        val messegeId = reference.push().key!!
+        reference.child(messegeId).setValue(chat).addOnCompleteListener {
+            if (it.isSuccessful){
+                Toast.makeText(this, "Messeges sended", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
 }

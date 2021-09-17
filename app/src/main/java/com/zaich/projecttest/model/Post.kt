@@ -1,5 +1,8 @@
 package com.zaich.projecttest.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
 data class Post(
     var text : String? = null ,
     var uid : String? =null,

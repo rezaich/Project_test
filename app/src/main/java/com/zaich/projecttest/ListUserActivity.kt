@@ -25,6 +25,7 @@ class ListUserActivity : AppCompatActivity() {
     private lateinit var binding: ActivityListUserBinding
     private lateinit var adapter: UserAdapter
     private var userList = ArrayList<Profile>()
+    private lateinit var model : Profile
     private lateinit var fireStore: FirebaseFirestore
     private lateinit var auth: FirebaseAuth
     private lateinit var database: FirebaseDatabase
@@ -47,36 +48,29 @@ class ListUserActivity : AppCompatActivity() {
         getUserList()
     }
 
-    fun getUserList(){
+    fun getUserList() {
         val currentUser = auth.currentUser
         val reference = database.getReference("users")
         val option = FirebaseRecyclerOptions.Builder<Profile>()
-            .setQuery(reference,Profile::class.java)
+            .setQuery(reference, Profile::class.java)
             .build()
-        val adapter = object  : FirebaseRecyclerAdapter<Profile,UserViewHolder>(option){
+        val adapter = object : FirebaseRecyclerAdapter<Profile, UserViewHolder>(option) {
             override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
-                val view = UserRowBinding.inflate(LayoutInflater.from(parent.context),parent
-                    ,false)
+                val view = UserRowBinding.inflate(
+                    LayoutInflater.from(parent.context), parent, false
+                )
                 return UserViewHolder(view)
             }
 
             override fun onBindViewHolder(holder: UserViewHolder, position: Int, model: Profile) {
-                holder.setUser(this@ListUserActivity,model,currentUser!!.uid)
+                holder.setUser(this@ListUserActivity, model, currentUser!!.uid)
 
-//                holder.itemView.setOnClickListener {
-//                    val username = userList[position]
-//
-//                    val intent = Intent(this@ListUserActivity, ChatActivity::class.java)
-//                    intent.putExtra(ChatActivity.EXTRA_USER, username)
-//
-//                    this@ListUserActivity.startActivity(intent)
-//                }
+                holder.itemView.setOnClickListener { view ->
+                    val userItem = model
+                    val intent = Intent(view.context, ChatActivity::class.java)
+                    intent.putExtra(ChatActivity.EXTRA_USER,userItem)
 
-                holder.itemView.setOnClickListener {
-                    val username = userList[position]
-                    val intent=Intent(this@ListUserActivity,ChatActivity::class.java)
-                    intent.putExtra(ChatActivity.EXTRA_USER,username.name)
-                    this@ListUserActivity.startActivity(intent)
+                    startActivity(intent)
                 }
             }
         }
