@@ -2,8 +2,10 @@ package com.zaich.projecttest
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -65,28 +67,27 @@ class ChatActivity : AppCompatActivity() {
         })*/
     }
 
-/*    override fun onStart() {
+    override fun onStart() {
         super.onStart()
         val currentUser = auth.currentUser
 
-
-        val selectUser = intent.getParcelableExtra<Profile>(EXTRA_USER) as Profile
         currentUser?.let {
             val uid = it.uid
             val reference = fireStore.collection("users").document(uid)
-            reference = FirebaseDatabase.getInstance().getReference("users").child(selectUser.uid!!)
             reference?.get()?.addOnCompleteListener {
                 it.result?.let {
                     if (it.exists()){
-                        Glide.with(this).load(selectUser.url).into(binding.imgProfile)
-                        binding.tvUserName.text = selectUser.name
+                        val name = it.getString("name")
+                        val url = it.getString("url")
+
+                        Glide.with(this).load(url).into(binding.imgProfile)
+                        binding.tvUserName.text = name
                     }
                     else{
-                        Glide.with(this@ChatActivity).load(selectUser.url).into(binding.imgProfile)
-                    }
+                        binding.imgProfile.setImageResource(R.mipmap.ic_launcher_round)                   }
                 }
             }
         }
-    }*/
+    }
 
 }
