@@ -35,10 +35,6 @@ class UserAdapter(private val list: ArrayList<Profile>, val context: Context) :
         holder.itemView.setOnClickListener {
             val username = list[position]
 
-            val intent = Intent(context, ChatActivity::class.java)
-            intent.putExtra(ChatActivity.EXTRA_USER, username)
-
-            context.startActivities(arrayOf(intent))
         }
     }
 

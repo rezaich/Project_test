@@ -5,11 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <LinearLayout
         android:id="@+id/l1"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="70dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -17,7 +16,7 @@
             android:id="@+id/imgBack"
             android:layout_width="0dp"
             android:layout_weight="0.5"
-            android:layout_height="32dp"
+            android:layout_height="50dp"
             android:layout_marginStart="10dp"
             android:padding="5dp"
             android:src="@drawable/ic_back" />
@@ -35,7 +34,7 @@
             android:id="@+id/imgProfile"
             android:layout_width="0dp"
             android:layout_weight="0.5"
-            android:layout_height="42dp"
+            android:layout_height="50dp"
             android:padding="5dp"
             android:src="@mipmap/ic_launcher" />
     </LinearLayout>
@@ -72,12 +71,11 @@
 
             <ImageButton
                 android:id="@+id/btnSendMessage"
-                android:layout_width="40dp"
-                android:src="@drawable/ic_send"
-                android:background="@drawable/button_background"
+                android:layout_width="100dp"
                 android:layout_height="40dp"
-                android:textColor="@color/grey"
-                android:text="@string/btn_sign_up"/>
+                android:background="@drawable/button_background"
+                android:src="@drawable/ic_send"
+                android:textColor="@color/grey" />
 
         </LinearLayout>
 

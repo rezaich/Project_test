@@ -1,4 +1,4 @@
-package com.zaich.projecttest
+package com.zaich.projecttest.adapter
 
 import android.app.Activity
 import android.net.Uri
