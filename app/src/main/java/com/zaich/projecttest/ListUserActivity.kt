@@ -18,6 +18,7 @@ import com.google.firebase.ktx.Firebase
 import com.zaich.projecttest.adapter.UserAdapter
 import com.zaich.projecttest.adapter.UserViewHolder
 import com.zaich.projecttest.databinding.ActivityListUserBinding
+import com.zaich.projecttest.databinding.ItemRightBinding
 import com.zaich.projecttest.databinding.UserRowBinding
 import com.zaich.projecttest.model.Profile
 
