@@ -16,6 +16,8 @@ class ChatSendViewHolder(val binding: ItemRightBinding):RecyclerView.ViewHolder(
 }
 class ChatReceivedViewHolder(val binding: ItemLeftBinding):RecyclerView.ViewHolder(binding.root) {
 
+
+
     fun setUserReceiver(activity:FragmentActivity,list: Chat,userId: String){
         binding.tvMessage.text = list.message
     }
