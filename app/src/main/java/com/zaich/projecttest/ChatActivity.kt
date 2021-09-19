@@ -128,31 +128,10 @@ class ChatActivity : AppCompatActivity() {
 //        val option2 = FirebaseRecyclerOptions.Builder<Chat>()
 //            .setQuery(reference2, Chat::class.java)
 //            .build()
-        val adapter =
-            object : FirebaseRecyclerAdapter<Chat, ChatSendViewHolder>(option1) {
-            override fun onCreateViewHolder(
-                parent: ViewGroup,
-                viewType: Int
-            ): ChatSendViewHolder {
-                val view = ItemRightBinding.inflate(
-                    LayoutInflater.from(parent.context),
-                    parent,
-                    false
-                )
-                return ChatSendViewHolder(view)
-            }
-
-            override fun onBindViewHolder(
-                holder: ChatSendViewHolder,
-                position: Int,
-                model: Chat
-            ) {
-                holder.setUserSender(this@ChatActivity, model, currentUser!!.uid)
-            }
-        }
 
 
-        val adapter2 = object : FirebaseRecyclerAdapter<Chat, ChatReceivedViewHolder>(option1) {
+
+/*        val adapter2 = object : FirebaseRecyclerAdapter<Chat, ChatReceivedViewHolder>(option1) {
             override fun onCreateViewHolder(
                 parent: ViewGroup,
                 viewType: Int
@@ -171,21 +150,98 @@ class ChatActivity : AppCompatActivity() {
 
             }
 
-        }
+        }*/
 
         reference1.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
 
                 for (dataSnapshot : DataSnapshot in snapshot.children){
                     val chat = dataSnapshot.getValue(Chat::class.java)
-                        if (chat?.senderUid.equals(senderId) && chat?.receiverUid.equals(receiverId)){
-                            adapter.startListening()
-                            binding.chatRecyclerView.adapter = adapter
-                        }else{
-                            adapter2.startListening()
-                            binding.chatRecyclerView.adapter = adapter2
-                        }
+                    val adapter =
+                        if (chat?.senderUid.equals(senderId) && chat?.receiverUid.equals(receiverId)) {
+                            object : FirebaseRecyclerAdapter<Chat, ChatSendViewHolder>(option1) {
+                                override fun onCreateViewHolder(
+                                    parent: ViewGroup,
+                                    viewType: Int
+                                ): ChatSendViewHolder {
+                                    val view = ItemRightBinding.inflate(
+                                        LayoutInflater.from(parent.context),
+                                        parent,
+                                        false
+                                    )
+                                    return ChatSendViewHolder(view)
+                                }
 
+                                override fun onBindViewHolder(
+                                    holder: ChatSendViewHolder,
+                                    position: Int,
+                                    model: Chat
+                                ) {
+                                    holder.setUserSender(
+                                        this@ChatActivity,
+                                        model,
+                                        currentUser!!.uid
+                                    )
+                                }
+                            }
+                        } else if(chat?.senderUid.equals(receiverId) && chat?.receiverUid.equals(senderId)){
+                            object : FirebaseRecyclerAdapter<Chat, ChatReceivedViewHolder>(option1) {
+                                override fun onCreateViewHolder(
+                                    parent: ViewGroup,
+                                    viewType: Int
+                                ): ChatReceivedViewHolder {
+                                    val view =
+                                        ItemLeftBinding.inflate(
+                                            LayoutInflater.from(parent.context),
+                                            parent,
+                                            false
+                                        )
+                                    return ChatReceivedViewHolder(view)
+                                }
+
+                                override fun onBindViewHolder(
+                                    holder: ChatReceivedViewHolder,
+                                    position: Int,
+                                    model: Chat
+                                ) {
+                                    holder.setUserReceiver(
+                                        this@ChatActivity,
+                                        model,
+                                        currentUser!!.uid
+                                    )
+
+                                }
+                            }
+
+                        }else{
+                            object : FirebaseRecyclerAdapter<Chat, ChatSendViewHolder>(option1) {
+                                override fun onCreateViewHolder(
+                                    parent: ViewGroup,
+                                    viewType: Int
+                                ): ChatSendViewHolder {
+                                    val view = ItemRightBinding.inflate(
+                                        LayoutInflater.from(parent.context),
+                                        parent,
+                                        false
+                                    )
+                                    return ChatSendViewHolder(view)
+                                }
+
+                                override fun onBindViewHolder(
+                                    holder: ChatSendViewHolder,
+                                    position: Int,
+                                    model: Chat
+                                ) {
+                                    holder.setUserSender(
+                                        this@ChatActivity,
+                                        model,
+                                        currentUser!!.uid
+                                    )
+                                }
+                            }
+                        }
+                    adapter.startListening()
+                    binding.chatRecyclerView.adapter = adapter
                 }
             }
 
@@ -194,6 +250,7 @@ class ChatActivity : AppCompatActivity() {
             }
 
         })
+
 
 
 /*        if (chat?.senderUid == uid){
