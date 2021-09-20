@@ -106,17 +106,10 @@ class ChatActivity : AppCompatActivity() {
         val currentUser = auth.currentUser
         val uid = currentUser?.uid
         val getModel = intent.getParcelableExtra<Profile>(EXTRA_USER) as Profile
-
-//        val MESSAGE_TYPE_LEFT = getModel.uid
-//        val MESSAGE_TYPE_RIGHT = uid
         val reference1 = database.getReference("messages/$uid/${getModel.uid}")
-//        val reference2 = database.getReference("messages/${getModel.uid}/$uid")
         val option1 = FirebaseRecyclerOptions.Builder<Chat>()
             .setQuery(reference1, Chat::class.java)
             .build()
-//        val option2 = FirebaseRecyclerOptions.Builder<Chat>()
-//            .setQuery(reference2, Chat::class.java)
-//            .build()
 
         val adapter =
             object : FirebaseRecyclerAdapter<Chat, ChatReceivedViewHolder>(option1) {
@@ -146,119 +139,5 @@ class ChatActivity : AppCompatActivity() {
             }
         adapter.startListening()
         binding.chatRecyclerView.adapter = adapter
-
-
-/*        val adapter2 = object : FirebaseRecyclerAdapter<Chat, ChatReceivedViewHolder>(option1) {
-            override fun onCreateViewHolder(
-                parent: ViewGroup,
-                viewType: Int
-            ): ChatReceivedViewHolder {
-                val view =
-                    ItemLeftBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                return ChatReceivedViewHolder(view)
-            }
-
-            override fun onBindViewHolder(
-                holder: ChatReceivedViewHolder,
-                position: Int,
-                model: Chat
-            ) {
-                holder.setUserReceiver(this@ChatActivity, model, currentUser!!.uid)
-
-            }
-
-        }*/
-
-/*        reference1.addValueEventListener(object : ValueEventListener{
-            override fun onDataChange(snapshot: DataSnapshot) {
-
-                for (dataSnapshot : DataSnapshot in snapshot.children){
-                    val chat = dataSnapshot.getValue(Chat::class.java)
-                    val adapter =
-                            object : FirebaseRecyclerAdapter<Chat, ChatReceivedViewHolder>(option1) {
-                                override fun onCreateViewHolder(
-                                    parent: ViewGroup,
-                                    viewType: Int
-                                ): ChatReceivedViewHolder {
-                                        val view = ItemLeftBinding.inflate(
-                                        LayoutInflater.from(parent.context),
-                                        parent,
-                                        false
-                                    )
-                                        return ChatReceivedViewHolder(view)
-                                }
-
-                                override fun onBindViewHolder(
-                                    holder: ChatReceivedViewHolder,
-                                    position: Int,
-                                    model: Chat
-                                ) {
-                                    holder.setUserReceiver(
-                                        this@ChatActivity,
-                                        model,
-                                        currentUser!!.uid
-                                    )
-                                }
-                            }
-                    adapter.startListening()
-                    binding.chatRecyclerView.adapter = adapter
-                    }
-                }
-
-            override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
-            }
-        })*/
-
-
-/*        if (chat?.senderUid == uid){
-            adapter.startListening()
-            binding.chatRecyclerView.adapter = adapter
-        }
-        if (uid == chat?.receiverUid){
-            adapter2.startListening()
-            binding.chatRecyclerView.adapter = adapter2
-        }*/
-
-
-/*        uid.let {
-            var reference0 = database.getReference("messages")
-            val messageId = reference0.push().key!!
-            val reference = database.getReference("messages/$uid/${getModel.uid}")
-                reference.get().addOnCompleteListener {
-                    it.result?.let {
-                        if (it.exists()){
-                            if (chat.receiverUid != uid) {
-                                adapter.startListening()
-                                binding.chatRecyclerView.adapter = adapter
-                            }
-                            if (chat.senderUid != uid) {
-                                adapter2.startListening()
-                                binding.chatRecyclerView.adapter = adapter2
-                            }
-                        }
-                    }
-            }
-
-        }*/
-
-/*        currentUser?.let {
-            reference1.get().addOnCompleteListener {
-                it.result.let {
-                    it?.children.let{
-                        if (chat.senderUid == uid){
-                            adapter.startListening()
-                            binding.chatRecyclerView.adapter = adapter
-                        }else if (chat.receiverUid == uid){
-                            adapter2.startListening()
-                            binding.chatRecyclerView.adapter = adapter2
-                        }
-                    }
-
-                }
-            }
-        }*/
-
-
     }
 }

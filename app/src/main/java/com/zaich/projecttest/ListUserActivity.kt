@@ -15,7 +15,6 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.zaich.projecttest.adapter.UserAdapter
 import com.zaich.projecttest.adapter.UserViewHolder
 import com.zaich.projecttest.databinding.ActivityListUserBinding
 import com.zaich.projecttest.databinding.UserRowBinding
@@ -23,9 +22,6 @@ import com.zaich.projecttest.model.Profile
 
 class ListUserActivity : AppCompatActivity() {
     private lateinit var binding: ActivityListUserBinding
-    private lateinit var adapter: UserAdapter
-    private var userList = ArrayList<Profile>()
-    private lateinit var model : Profile
     private lateinit var fireStore: FirebaseFirestore
     private lateinit var auth: FirebaseAuth
     private lateinit var database: FirebaseDatabase

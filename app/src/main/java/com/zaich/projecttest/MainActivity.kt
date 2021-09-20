@@ -86,9 +86,6 @@ class MainActivity : AppCompatActivity() {
             .build()
         val adapter = object : FirebaseRecyclerAdapter<Post, PostViewHolder>(options) {
             override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
-/*                val view =
-                    LayoutInflater.from(parent.context).inflate(R.layout.post_layout, parent, false)
-                return PostViewHolder(view)*/
 
                 val view =
                     PostLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)

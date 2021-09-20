@@ -25,13 +25,5 @@ class ChatReceivedViewHolder(val binding: ItemLeftBinding):RecyclerView.ViewHold
                 binding.layoutUserSender.visibility = View.GONE
             }
         }
-/*        if (userId == list.senderUid) {
-            binding.layoutUserReceived.visibility = View.GONE
-            binding.layoutUserSender.visibility = View.VISIBLE
-        }
-        else if (userId == list.receiverUid){
-            binding.layoutUserReceived.visibility = View.VISIBLE
-            binding.layoutUserSender.visibility = View.GONE
-        }*/
     }
 }
