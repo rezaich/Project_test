@@ -3,29 +3,21 @@ package com.zaich.projecttest
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.zaich.projecttest.adapter.ChatAdapter
 import com.zaich.projecttest.adapter.ChatReceivedViewHolder
-import com.zaich.projecttest.adapter.ChatSendViewHolder
 import com.zaich.projecttest.databinding.ActivityChatBinding
 import com.zaich.projecttest.databinding.ItemLeftBinding
-import com.zaich.projecttest.databinding.ItemRightBinding
 import com.zaich.projecttest.model.Chat
 import com.zaich.projecttest.model.Profile
 import java.text.SimpleDateFormat
@@ -53,9 +45,6 @@ class ChatActivity : AppCompatActivity() {
         auth = Firebase.auth
         database = Firebase.database
         chat = Chat()
-        val currentUser = auth.currentUser
-        val uid = currentUser?.uid
-
 
 
         binding.imgBack.setOnClickListener {
@@ -91,16 +80,16 @@ class ChatActivity : AppCompatActivity() {
                     val messegeId = reference.push().key!!
 
                     reference.child(uid).child(getModel.uid!!).child(messegeId).setValue(chat)
-                        .addOnCompleteListener {
-                            if (it.isSuccessful) {
+                        .addOnCompleteListener { sendMessage ->
+                            if (sendMessage.isSuccessful) {
                                 Toast.makeText(this, "Messages Sending", Toast.LENGTH_SHORT).show()
                             } else {
                                 Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show()
                             }
                         }
                     reference.child(getModel.uid!!).child(uid).child(messegeId).setValue(chat)
-                        .addOnCompleteListener {
-                            if (it.isSuccessful) {
+                        .addOnCompleteListener { receivedMessage ->
+                            if (receivedMessage.isSuccessful) {
                                 Toast.makeText(this, "Messages Sending", Toast.LENGTH_SHORT).show()
                             } else {
                                 Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show()
@@ -110,10 +99,10 @@ class ChatActivity : AppCompatActivity() {
 
             }
         }
-        getChat(uid!! , getModel.uid!! )
+        getChat()
     }
 
-    fun getChat(senderId: String , receiverId: String) {
+    private fun getChat() {
         val currentUser = auth.currentUser
         val uid = currentUser?.uid
         val getModel = intent.getParcelableExtra<Profile>(EXTRA_USER) as Profile
@@ -129,6 +118,34 @@ class ChatActivity : AppCompatActivity() {
 //            .setQuery(reference2, Chat::class.java)
 //            .build()
 
+        val adapter =
+            object : FirebaseRecyclerAdapter<Chat, ChatReceivedViewHolder>(option1) {
+                override fun onCreateViewHolder(
+                    parent: ViewGroup,
+                    viewType: Int
+                ): ChatReceivedViewHolder {
+                    val view = ItemLeftBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent,
+                        false
+                    )
+                    return ChatReceivedViewHolder(view)
+                }
+
+                override fun onBindViewHolder(
+                    holder: ChatReceivedViewHolder,
+                    position: Int,
+                    model: Chat
+                ) {
+                    holder.setUserReceiver(
+                        this@ChatActivity,
+                        model,
+                        uid!!
+                    )
+                }
+            }
+        adapter.startListening()
+        binding.chatRecyclerView.adapter = adapter
 
 
 /*        val adapter2 = object : FirebaseRecyclerAdapter<Chat, ChatReceivedViewHolder>(option1) {
@@ -152,51 +169,23 @@ class ChatActivity : AppCompatActivity() {
 
         }*/
 
-        reference1.addValueEventListener(object : ValueEventListener{
+/*        reference1.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
 
                 for (dataSnapshot : DataSnapshot in snapshot.children){
                     val chat = dataSnapshot.getValue(Chat::class.java)
                     val adapter =
-                        if (chat?.senderUid.equals(senderId) && chat?.receiverUid.equals(receiverId)) {
-                            object : FirebaseRecyclerAdapter<Chat, ChatSendViewHolder>(option1) {
-                                override fun onCreateViewHolder(
-                                    parent: ViewGroup,
-                                    viewType: Int
-                                ): ChatSendViewHolder {
-                                    val view = ItemRightBinding.inflate(
-                                        LayoutInflater.from(parent.context),
-                                        parent,
-                                        false
-                                    )
-                                    return ChatSendViewHolder(view)
-                                }
-
-                                override fun onBindViewHolder(
-                                    holder: ChatSendViewHolder,
-                                    position: Int,
-                                    model: Chat
-                                ) {
-                                    holder.setUserSender(
-                                        this@ChatActivity,
-                                        model,
-                                        currentUser!!.uid
-                                    )
-                                }
-                            }
-                        } else if(chat?.senderUid.equals(receiverId) && chat?.receiverUid.equals(senderId)){
                             object : FirebaseRecyclerAdapter<Chat, ChatReceivedViewHolder>(option1) {
                                 override fun onCreateViewHolder(
                                     parent: ViewGroup,
                                     viewType: Int
                                 ): ChatReceivedViewHolder {
-                                    val view =
-                                        ItemLeftBinding.inflate(
-                                            LayoutInflater.from(parent.context),
-                                            parent,
-                                            false
-                                        )
-                                    return ChatReceivedViewHolder(view)
+                                        val view = ItemLeftBinding.inflate(
+                                        LayoutInflater.from(parent.context),
+                                        parent,
+                                        false
+                                    )
+                                        return ChatReceivedViewHolder(view)
                                 }
 
                                 override fun onBindViewHolder(
@@ -209,48 +198,17 @@ class ChatActivity : AppCompatActivity() {
                                         model,
                                         currentUser!!.uid
                                     )
-
                                 }
                             }
-
-                        }else{
-                            object : FirebaseRecyclerAdapter<Chat, ChatSendViewHolder>(option1) {
-                                override fun onCreateViewHolder(
-                                    parent: ViewGroup,
-                                    viewType: Int
-                                ): ChatSendViewHolder {
-                                    val view = ItemRightBinding.inflate(
-                                        LayoutInflater.from(parent.context),
-                                        parent,
-                                        false
-                                    )
-                                    return ChatSendViewHolder(view)
-                                }
-
-                                override fun onBindViewHolder(
-                                    holder: ChatSendViewHolder,
-                                    position: Int,
-                                    model: Chat
-                                ) {
-                                    holder.setUserSender(
-                                        this@ChatActivity,
-                                        model,
-                                        currentUser!!.uid
-                                    )
-                                }
-                            }
-                        }
                     adapter.startListening()
                     binding.chatRecyclerView.adapter = adapter
+                    }
                 }
-            }
 
             override fun onCancelled(error: DatabaseError) {
                 TODO("Not yet implemented")
             }
-
-        })
-
+        })*/
 
 
 /*        if (chat?.senderUid == uid){
@@ -261,7 +219,6 @@ class ChatActivity : AppCompatActivity() {
             adapter2.startListening()
             binding.chatRecyclerView.adapter = adapter2
         }*/
-
 
 
 /*        uid.let {
@@ -301,8 +258,6 @@ class ChatActivity : AppCompatActivity() {
                 }
             }
         }*/
-
-
 
 
     }

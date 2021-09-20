@@ -44,7 +44,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/r1"
-        android:layout_below="@id/l1" />
+        android:layout_below="@id/l1"
+        tools:listitem="@layout/item_left"/>
 
     <RelativeLayout
         android:id="@+id/r1"
